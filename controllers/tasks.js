@@ -2,24 +2,45 @@
 
 const taskModel = require('../models/task')
 
-const getAllTasks = (req, res) => {
-  res.send('Get all tasks')
+const getAllTasks = async (req, res) => {
+  try {
+    const result = await taskModel.find()
+    res.status(200).json({ tasks : result})
+  }
+  catch (error) {
+    console.error('Error on getting tasks: ', error)
+    res.status(500).json({ message: 'Server Error' })
+  }
 }
 
 // app.post('/api/v1/task') - Create a new task
 const createTask = async (req, res) => {
-  // console.log('create Task ', req.body)
-  const tasr = await taskModel.create(req.body)
-  res.status(200).json(req.body)
+  try {
+    const task = await taskModel.create(req.body)
+    res.status(200).json({task})
+  }
+  catch (error) {
+    console.error('Error on creating task: ', error)
+    res.status(500).json({ message: 'Server Error' })
+  }
 }
 
 // app.get('/api/v1/task/:id') - get a single task
-const getSingleTask = (req, res) => {
-  console.log(' GEt single Task ', req.body)
-  
-  res.json({
-    id: req.params.id,
-  })
+const getSingleTask = async (req, res) => {
+  // res.json({
+    //   id: req.params.id,
+    // })
+
+    try {
+      const {id: taskId } = req.params
+      const task = await taskModel.findById(taskId)
+      if (!task) return res.status(404).json({ message: 'No Task found with that Id' })
+      res.json({task})  
+  }
+  catch (error) {
+    console.error('Error on getting single task: ', error)
+    res.status(404).json({ message: 'Server Error ST' })
+  }
 }
 
 // app.patch('/api/v1/task/:id') - update a task
