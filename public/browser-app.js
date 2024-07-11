@@ -71,7 +71,7 @@ formDOM.addEventListener('submit', async (e) => {
   const name = taskInputDOM.value
 
   try {
-    await axios.post('/api/v1/tasks', { name })
+    await axios.post('/api/v1/task', { name })
     showTasks()
     taskInputDOM.value = ''
     formAlertDOM.style.display = 'block'

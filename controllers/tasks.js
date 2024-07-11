@@ -3,35 +3,24 @@
 const taskModel = require('../models/task')
 const { merge } = require('../routes/tasks')
 
-const getAllTasks = async (req, res) => {
-  try {
+const asyncwrapper = require('../middleware/async')
+
+const getAllTasks = asyncwrapper(async (req, res, next) => {
     const result = await taskModel.find()
     res.status(200).json({ tasks : result})
-  }
-  catch (error) {
-    console.error('Error on getting tasks: ', error)
-    res.status(500).json({ message: 'Server Error' })
-  }
-}
+})
 
 // app.post('/api/v1/task') - Create a new task
-const createTask = async (req, res) => {
-  try {
-    const task = await taskModel.create(req.body)
+const createTask = asyncwrapper(async (req, res) => {
+  const task = await taskModel.create(req.body)
     res.status(200).json({task})
-  }
-  catch (error) {
-    console.error('Error on creating task: ', error)
-    res.status(500).json({ message: 'Server Error' })
-  }
-}
+})
 
 // app.get('/api/v1/task/:id') - get a single task
 const getSingleTask = async (req, res) => {
   // res.json({
     //   id: req.params.id,
     // })
-
     try {
       const {id: taskId } = req.params
       const task = await taskModel.findById(taskId)
@@ -43,7 +32,6 @@ const getSingleTask = async (req, res) => {
     res.status(404).json({ message: 'Server Error ST' })
   }
 }
-
 
 // app.delete('/api/v1/task/:id') - delete a task
 const deleteTask = async (req, res) => {

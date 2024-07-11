@@ -4,10 +4,9 @@ const tasks = require('./routes/tasks')
 const app = express()
 const { getAllTask } = require('./controllers/tasks')
 const connectDB = require('./db/connect')
+const notFound = require('./middleware/not-found')
+const errHandlerMiddleware = require('./middleware/error-handler')
 
-
-// console.log('Starting Server...', process.env)
-// middleware  must use to see the incoming request as JSON format
 app.use(express.json())
 app.use(express.static('./public'))
 
@@ -20,6 +19,10 @@ app.get('/', (req, res)=>{
 })
 
 app.use('/api/v1/task', tasks)
+
+app.use('', notFound)
+
+app.use(errHandlerMiddleware)
 
 // app.get('/api/v1/task') - get all tasks
 // app.post('/api/v1/task') - Create a new task
@@ -37,11 +40,6 @@ const start = async () => {
   catch (error) {
     console.error(`Error on starting server: ${error}`)
   }
-  // connectDB()
-  // .then(() => {
-  //   app.listen(port, console.log(`Server running on port ${port}...`))
-  // })
-  // .catch(error => console.error(`Error on starting server: ${error}`))
 }
 
 start()
