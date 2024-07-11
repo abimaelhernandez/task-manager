@@ -1,13 +1,16 @@
 // controllers/tasks.js
 
+const taskModel = require('../models/task')
+
 const getAllTasks = (req, res) => {
   res.send('Get all tasks')
 }
 
 // app.post('/api/v1/task') - Create a new task
-const createTask = (req, res) => {
+const createTask = async (req, res) => {
   // console.log('create Task ', req.body)
-  res.json(req.body)
+  const tasr = await taskModel.create(req.body)
+  res.status(200).json(req.body)
 }
 
 // app.get('/api/v1/task/:id') - get a single task

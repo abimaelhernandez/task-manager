@@ -3,9 +3,12 @@ const express = require('express')
 const tasks = require('./routes/tasks')
 const app = express()
 const { getAllTask } = require('./controllers/tasks')
+const connectDB = require('./db/connect')
 
+require('dotenv').config()
 require('./db/connect')
 
+// console.log('Starting Server...', process.env)
 // middleware  must use to see the incoming request as JSON format
 app.use(express.json())
 
@@ -27,5 +30,20 @@ app.use('/api/v1/task', tasks)
 // app.delete('/api/v1/task/:id') - delete a task
 
 const port = process.env.PORT || 3000
+const start = async () => {
+  try {
+    await connectDB(process.env.MONGO_URI)
+    app.listen(port, console.log(`Server running on port ${port}...`))
+  } 
+  catch (error) {
+    console.error(`Error on starting server: ${error}`)
+  }
+  // connectDB()
+  // .then(() => {
+  //   app.listen(port, console.log(`Server running on port ${port}...`))
+  // })
+  // .catch(error => console.error(`Error on starting server: ${error}`))
+}
 
-app.listen(port,  console.log(`Server running on port ${port} ...`))
+start()
+// app.listen(port,  console.log(`Server running on port ${port} ...`))
