@@ -10,7 +10,7 @@ const showTasks = async () => {
   try {
     const {
       data: { tasks },
-    } = await axios.get('localhost:3000/api/v1/tasks')
+    } = await axios.get('/api/v1/task')
     if (tasks.length < 1) {
       tasksDOM.innerHTML = '<h5 class="empty-list">No tasks in your list</h5>'
       loadingDOM.style.visibility = 'hidden'
@@ -55,7 +55,7 @@ tasksDOM.addEventListener('click', async (e) => {
     loadingDOM.style.visibility = 'visible'
     const id = el.parentElement.dataset.id
     try {
-      await axios.delete(`/api/v1/tasks/${id}`)
+      await axios.delete(`/api/v1/task/${id}`)
       showTasks()
     } catch (error) {
       console.log(error)

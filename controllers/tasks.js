@@ -77,6 +77,7 @@ const updateTask = async (req, res) => {
       message: req.body
     })
   }
+  
   catch (error) {
     console.error('Error on updating task: ', error)
     res.status(500).json({ message: 'Error updating task' })

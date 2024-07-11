@@ -12,8 +12,10 @@ const showTask = async () => {
   try {
     const {
       data: { task },
-    } = await axios.get(`/api/v1/tasks/${id}`)
-    const { _id: taskID, completed, name } = task
+    } = await axios.get(`/api/v1/task/${id}`)
+    
+    console.log('inside showTask', task)
+    const { id: taskID, completed, name } = task
 
     taskIDDOM.textContent = taskID
     taskNameDOM.value = name
@@ -31,18 +33,20 @@ showTask()
 editFormDOM.addEventListener('submit', async (e) => {
   editBtnDOM.textContent = 'Loading...'
   e.preventDefault()
+  
   try {
     const taskName = taskNameDOM.value
     const taskCompleted = taskCompletedDOM.checked
 
     const {
       data: { task },
-    } = await axios.patch(`/api/v1/tasks/${id}`, {
+    } = await axios.patch(`/api/v1/task/${id}`, {
       name: taskName,
       completed: taskCompleted,
     })
-
-    const { _id: taskID, completed, name } = task
+    console.log('EDIT HERE :', task)
+    
+    const { id: taskID, completed, name } = task
 
     taskIDDOM.textContent = taskID
     taskNameDOM.value = name
@@ -59,6 +63,7 @@ editFormDOM.addEventListener('submit', async (e) => {
     formAlertDOM.style.display = 'block'
     formAlertDOM.innerHTML = `error, please try again`
   }
+  
   editBtnDOM.textContent = 'Edit'
   setTimeout(() => {
     formAlertDOM.style.display = 'none'
