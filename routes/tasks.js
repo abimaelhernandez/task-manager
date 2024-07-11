@@ -19,7 +19,8 @@ router.route('/').get(getAllTasks).post(createTask)
 
 /* 
   app.get('/api/v1/task/:id') - get a single task
-  notice how you can chain CRUD methods together such as `.get().patch().delete()`
+  notice how you can chain CRUD methods together such as 
+  `.get().patch().delete()`
   this available since using same enpoint for different HTTP methods
   */ 
   
