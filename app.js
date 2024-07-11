@@ -2,8 +2,9 @@
 const express = require('express')
 const tasks = require('./routes/tasks')
 const app = express()
-
 const { getAllTask } = require('./controllers/tasks')
+
+require('./db/connect')
 
 // middleware  must use to see the incoming request as JSON format
 app.use(express.json())
