@@ -9,6 +9,7 @@ const connectDB = require('./db/connect')
 // console.log('Starting Server...', process.env)
 // middleware  must use to see the incoming request as JSON format
 app.use(express.json())
+app.use(express.static('./public'))
 
 require('dotenv').config()
 require('./db/connect')
@@ -16,10 +17,6 @@ require('./db/connect')
 // set up routes folder & routes
 app.get('/', (req, res)=>{
   res.send('Welcome API HOME')
-})
-
-app.get('/hello', (req, res) => {
-  res.send('Task Manager')
 })
 
 app.use('/api/v1/task', tasks)

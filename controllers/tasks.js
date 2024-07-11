@@ -1,6 +1,7 @@
 // controllers/tasks.js
 
 const taskModel = require('../models/task')
+const { merge } = require('../routes/tasks')
 
 const getAllTasks = async (req, res) => {
   try {
@@ -43,16 +44,43 @@ const getSingleTask = async (req, res) => {
   }
 }
 
-// app.patch('/api/v1/task/:id') - update a task
-const updateTask = (req, res) => {
-  console.log(' Update Task ', req.params.id)
-  res.send('Update Task')
-}
 
 // app.delete('/api/v1/task/:id') - delete a task
-const deleteTask = (req, res) => {
+const deleteTask = async (req, res) => {
   console.log(' delete Task ', req.body)
-  res.send('Delete Task')
+
+  try {
+    const { id: taskId } = req.params
+    const task = await taskModel.findByIdAndDelete(taskId)
+    
+    if (!task) return res.status(404).json({ message: 'No Task found with that Id' })
+
+    res.status(200).json({ message: 'Task deleted successfully' })
+  }
+  catch (error) {
+    console.error('Error on deleting task: ', error)
+    res.status(500).json({ message: 'Error deleting task' })
+  }
+}
+
+// app.patch('/api/v1/task/:id') - update a task
+const updateTask = async (req, res) => {
+  console.log(' Update Task ', req.params.id)
+  
+  try {
+    const {id: taskId } = req.params
+    const task = await taskModel.findByIdAndUpdate(taskId, req.body, { new: true, runValidators: true })
+    
+    if (!task) return res.status(404).json({ message: 'No Task found with that Id' })
+    
+    res.status(200).json({
+      message: req.body
+    })
+  }
+  catch (error) {
+    console.error('Error on updating task: ', error)
+    res.status(500).json({ message: 'Error updating task' })
+  }
 }
 
 module.exports = {
