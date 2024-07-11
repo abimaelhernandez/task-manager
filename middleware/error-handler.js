@@ -5,5 +5,4 @@ const errHandlerMiddleware =  (err, req, res, next) => {
   })
 }
 
-
 module.exports = errHandlerMiddleware
